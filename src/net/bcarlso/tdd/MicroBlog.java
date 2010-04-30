@@ -5,9 +5,9 @@ import java.util.List;
 public class MicroBlog {
 
 	private List<Post> posts;
-	private PostsFile repository;
+	private PostsRepository repository;
 
-	public MicroBlog(PostsFile repository) {
+	public MicroBlog(PostsRepository repository) {
 		this.repository = repository;
 		posts = this.repository.load();
 	}
@@ -26,7 +26,7 @@ public class MicroBlog {
 		Post post = new Post(user, validatedMessage);
 		posts.add(post);
 
-		this.repository.save(posts);
+		repository.save(posts);
 
 		return post;
 	}

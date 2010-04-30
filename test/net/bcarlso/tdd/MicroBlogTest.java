@@ -1,8 +1,9 @@
 package net.bcarlso.tdd;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,8 +16,7 @@ public class MicroBlogTest {
 
 	@Before
 	public void setUp() {
-		new File("./posts.microblog").delete();
-		blog = new MicroBlog(new PostsFile("./posts.microblog"));
+		blog = new MicroBlog(new DummyRepository());
 		user = new User("bcarlso");
 	}
 
@@ -55,14 +55,47 @@ public class MicroBlogTest {
 
 	@Test
 	public void shouldSavePostsAcrossSessions() throws Exception {
+		MockRepository repository = new MockRepository();
+		blog = new MicroBlog(repository);
 		blog.post(user, "Saved Message");
-		List<Post> timeline = new MicroBlog(new PostsFile("./posts.microblog")).timeline();
-		assertEquals(blog.timeline().size(), timeline.size());
+		repository.verify();
 	}
 	
 	private void addPosts(int numberOfPosts) {
 		for(int i = 0; i < numberOfPosts; i++) {
 			blog.post(user, String.valueOf(i));
+		}
+	}
+	
+	private static class DummyRepository implements PostsRepository {
+
+		@Override
+		public List<Post> load() {
+			return new ArrayList<Post>();
+		}
+
+		@Override
+		public void save(List<Post> posts) {
+		}
+	}
+
+
+	public static class MockRepository extends DummyRepository {
+
+		private List<Post> saveWasCalledWith;
+
+		public void verify() {
+			assertNotNull(saveWasCalledWith);
+		}
+		
+		@Override
+		public List<Post> load() {
+			return new ArrayList<Post>();
+		}
+
+		@Override
+		public void save(List<Post> posts) {
+			saveWasCalledWith = posts;
 		}
 	}
 }
