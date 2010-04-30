@@ -1,17 +1,15 @@
 package net.bcarlso.tdd;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
 
 public class MicroBlog {
 
 	private List<Post> posts;
-	private PostsFile postsRepository;
+	private PostsFile repository;
 
-	public MicroBlog() {
-		postsRepository = new PostsFile("./posts.microblog");
-		posts = postsRepository.load();
+	public MicroBlog(PostsFile repository) {
+		this.repository = repository;
+		posts = this.repository.load();
 	}
 
 	public Post post(User user, String message) {
@@ -28,7 +26,7 @@ public class MicroBlog {
 		Post post = new Post(user, validatedMessage);
 		posts.add(post);
 
-		postsRepository.save(posts);
+		this.repository.save(posts);
 
 		return post;
 	}

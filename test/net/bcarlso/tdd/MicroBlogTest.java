@@ -16,7 +16,7 @@ public class MicroBlogTest {
 	@Before
 	public void setUp() {
 		new File("./posts.microblog").delete();
-		blog = new MicroBlog();
+		blog = new MicroBlog(new PostsFile("./posts.microblog"));
 		user = new User("bcarlso");
 	}
 
@@ -56,7 +56,7 @@ public class MicroBlogTest {
 	@Test
 	public void shouldSavePostsAcrossSessions() throws Exception {
 		blog.post(user, "Saved Message");
-		List<Post> timeline = new MicroBlog().timeline();
+		List<Post> timeline = new MicroBlog(new PostsFile("./posts.microblog")).timeline();
 		assertEquals(blog.timeline().size(), timeline.size());
 	}
 	
