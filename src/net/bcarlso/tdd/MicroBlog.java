@@ -1,23 +1,23 @@
 package net.bcarlso.tdd;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MicroBlog {
 
-	private List<String> posts;
+	private List<Post> posts;
 
 	public MicroBlog() {
-		posts = new ArrayList<String>();
+		posts = new ArrayList<Post>();
 	}
 
 	public Post post(User user, String message) {
-		posts.add(message);
-		return new Post(user, message);
+		Post post = new Post(user, message);
+		posts.add(post);
+		return post;
 	}
 
-	public List<String> timeline() {
+	public List<Post> postTimeline() {
 		return posts;
 	}
 
