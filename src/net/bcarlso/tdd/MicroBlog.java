@@ -43,4 +43,9 @@ public class MicroBlog {
 		return (posts.size() > 10) ? posts.subList(0, 10) : posts;
 	}
 
+	public void follow(User currentUser, User userToFollow) {
+		currentUser.follow(userToFollow);
+		userToFollow.addFollower(currentUser);
+	}
+
 }

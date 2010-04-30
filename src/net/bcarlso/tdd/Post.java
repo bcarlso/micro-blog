@@ -3,7 +3,8 @@ package net.bcarlso.tdd;
 import java.io.Serializable;
 
 public class Post implements Serializable {
-
+	private static final long serialVersionUID = 1L;
+	
 	private final User user;
 	private final String message;
 

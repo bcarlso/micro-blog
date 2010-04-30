@@ -2,6 +2,7 @@ package net.bcarlso.tdd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,12 +13,12 @@ import org.junit.Test;
 
 public class MicroBlogTest {
 	private MicroBlog blog;
-	private User user;
+	private User currentUser;
 
 	@Before
 	public void setUp() {
 		blog = new MicroBlog(new DummyRepository());
-		user = new User("bcarlso");
+		currentUser = new User("bcarlso");
 	}
 
 	@Test(expected=IllegalArgumentException.class)
@@ -27,22 +28,22 @@ public class MicroBlogTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void shouldRequireMessage() throws Exception {
-		blog.post(user, null);
+		blog.post(currentUser, null);
 	}
 	
 	@Test
 	public void shouldBeAbleToPost() throws Exception {
-		Post post = blog.post(user, "Message");
+		Post post = blog.post(currentUser, "Message");
 		List<Post> expectedTimeline = Arrays.asList(post);
 		
-		assertEquals(user, post.getUser());
+		assertEquals(currentUser, post.getUser());
 		assertEquals("Message", post.getMessage());
 		assertEquals(expectedTimeline, blog.timeline());
 	}
 
 	@Test
 	public void shouldTruncateLongMessages() throws Exception {
-		Post post = blog.post(user, "Very loooooooooooooooooooooooonnnnnnnnnnnngggggggggg meeeeesssssaaaagggeeee");
+		Post post = blog.post(currentUser, "Very loooooooooooooooooooooooonnnnnnnnnnnngggggggggg meeeeesssssaaaagggeeee");
 		assertEquals("Very looooooooooo...", post.getMessage());
 	}
 	
@@ -57,13 +58,29 @@ public class MicroBlogTest {
 	public void shouldSavePostsAcrossSessions() throws Exception {
 		MockRepository repository = new MockRepository();
 		blog = new MicroBlog(repository);
-		blog.post(user, "Saved Message");
+		blog.post(currentUser, "Saved Message");
 		repository.verify();
+	}
+	
+	@Test
+	public void userShouldBeAbleToFollowOtherUsers() throws Exception {
+		User userToFollow = new User("toranb");
+		blog.follow(currentUser, userToFollow);
+		assertEquals(1, currentUser.followingCount());
+		assertTrue(currentUser.isFollowing(userToFollow));
+	}
+	
+	@Test
+	public void userShouldReflectBeingFollowed() throws Exception {
+		User userToFollow = new User("toranb");
+		blog.follow(currentUser, userToFollow);
+		assertEquals(1, userToFollow.followerCount());
+		assertTrue(userToFollow.isFollowedBy(currentUser));
 	}
 	
 	private void addPosts(int numberOfPosts) {
 		for(int i = 0; i < numberOfPosts; i++) {
-			blog.post(user, String.valueOf(i));
+			blog.post(currentUser, String.valueOf(i));
 		}
 	}
 	
