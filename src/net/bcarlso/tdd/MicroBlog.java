@@ -12,6 +12,9 @@ public class MicroBlog {
 	}
 
 	public Post post(User user, String message) {
+		if(user == null) throw new IllegalArgumentException("User is required");
+		if(message == null) throw new IllegalArgumentException("Message is required");
+		
 		String validatedMessage = message;
 		
 		if( isTooLong(message) ) {

@@ -18,6 +18,16 @@ public class MicroBlogTest {
 		user = new User("bcarlso");
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	public void shouldRequireUser() throws Exception {
+		blog.post(null, "Anything");
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void shouldRequireMessage() throws Exception {
+		blog.post(user, null);
+	}
+	
 	@Test
 	public void shouldBeAbleToPost() throws Exception {
 		Post post = blog.post(user, "Message");
