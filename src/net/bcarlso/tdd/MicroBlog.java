@@ -12,8 +12,9 @@ public class MicroBlog {
 		posts = new ArrayList<String>();
 	}
 
-	public void post(User user, String message) {
+	public Post post(User user, String message) {
 		posts.add(message);
+		return new Post(user, message);
 	}
 
 	public List<String> timeline() {

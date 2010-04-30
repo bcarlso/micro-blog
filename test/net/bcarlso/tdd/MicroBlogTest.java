@@ -13,7 +13,10 @@ public class MicroBlogTest {
 		MicroBlog blog = new MicroBlog();
 		User user = new User("bcarlso");
 		
-		blog.post(user, "Message");
+		Post post = blog.post(user, "Message");
+		
+		assertEquals(user, post.user());
+		assertEquals("Message", post.message());
 		
 		List<String> expectedTimeline = Arrays.asList("Message");
 		assertEquals(expectedTimeline, blog.timeline());
