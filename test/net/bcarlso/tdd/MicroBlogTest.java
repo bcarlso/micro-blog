@@ -62,22 +62,6 @@ public class MicroBlogTest {
 		repository.verify();
 	}
 	
-	@Test
-	public void userShouldBeAbleToFollowOtherUsers() throws Exception {
-		User userToFollow = new User("toranb");
-		blog.follow(currentUser, userToFollow);
-		assertEquals(1, currentUser.followingCount());
-		assertTrue(currentUser.isFollowing(userToFollow));
-	}
-	
-	@Test
-	public void userShouldReflectBeingFollowed() throws Exception {
-		User userToFollow = new User("toranb");
-		blog.follow(currentUser, userToFollow);
-		assertEquals(1, userToFollow.followerCount());
-		assertTrue(userToFollow.isFollowedBy(currentUser));
-	}
-	
 	private void addPosts(int numberOfPosts) {
 		for(int i = 0; i < numberOfPosts; i++) {
 			blog.post(currentUser, String.valueOf(i));

@@ -24,6 +24,7 @@ public class User implements Serializable {
 
 	public void follow(User userToFollow) {
 		following.add(userToFollow);
+		userToFollow.addFollower(this);
 	}
 
 	public int followerCount() {
