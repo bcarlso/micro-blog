@@ -12,7 +12,9 @@ public class MicroBlogTest {
 	public void shouldBeAbleToPost() throws Exception {
 		MicroBlog blog = new MicroBlog();
 		User user = new User("bcarlso");
+		
 		blog.post(user, "Message");
+		
 		List<String> expectedTimeline = Arrays.asList("Message");
 		assertEquals(expectedTimeline, blog.timeline());
 	}
