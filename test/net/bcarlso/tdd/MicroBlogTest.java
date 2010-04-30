@@ -2,7 +2,6 @@ package net.bcarlso.tdd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +61,19 @@ public class MicroBlogTest {
 		repository.verify();
 	}
 	
+	@Test
+	public void shouldFilterUserTimelineByFollowing() throws Exception {
+		User kent = new User("kentbeck");
+		currentUser.follow(kent);
+		assertOnlyPostsFrom(kent, blog.timeline(currentUser));
+	}
+	
+	private void assertOnlyPostsFrom(User user, List<Post> timeline) {
+		for(Post post : timeline) {
+			assertEquals(user, post.getUser());
+		}
+	}
+
 	private void addPosts(int numberOfPosts) {
 		for(int i = 0; i < numberOfPosts; i++) {
 			blog.post(currentUser, String.valueOf(i));
@@ -80,6 +92,19 @@ public class MicroBlogTest {
 		}
 	}
 
+
+	public static class StubbedRepositoryWithPostsFromKentAndAplusk implements PostsRepository {
+		@Override
+		public List<Post> load() {
+			return Arrays.asList(new Post(new User("kentbeck"), "New JUnit released"),
+					new Post(new User("aplusk"), "You've been punked!"),
+					new Post(new User("aplusk"), "Blah Blah"));
+		}
+
+		@Override
+		public void save(List<Post> posts) {
+		}
+	}
 
 	public static class MockRepository extends DummyRepository {
 

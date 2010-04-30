@@ -1,5 +1,6 @@
 package net.bcarlso.tdd;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MicroBlog {
@@ -41,5 +42,16 @@ public class MicroBlog {
 
 	public List<Post> timeline() {
 		return (posts.size() > 10) ? posts.subList(0, 10) : posts;
+	}
+
+	public List<Post> timeline(User currentUser) {
+		List<Post> personalizedTimeline = new ArrayList<Post>();
+		for(int i = 0; i < posts.size(); i++) {
+			Post currentPost = posts.get(i);
+			if(currentUser.isFollowing(currentPost.getUser())) {
+				personalizedTimeline.add(currentPost);
+			}
+		}
+		return personalizedTimeline;
 	}
 }

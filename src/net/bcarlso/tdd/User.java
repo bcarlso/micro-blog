@@ -9,7 +9,10 @@ public class User implements Serializable {
 	private ArrayList<User> following;
 	private ArrayList<User> followers;
 
+	private final String username;
+
 	public User(String username) {
+		this.username = username;
 		following = new ArrayList<User>();
 		followers = new ArrayList<User>();
 	}
@@ -39,4 +42,19 @@ public class User implements Serializable {
 		followers.add(currentUser);
 	}
 
+	public String getName() {
+		return username;
+	}
+
+	public boolean equals(Object other) {
+		if (other instanceof User)
+			return ((User) other).getName().equals(getName());
+		else
+			return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 1;
+	}
 }
