@@ -1,6 +1,8 @@
 package net.bcarlso.tdd;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
 	public User(String username) {
 	}

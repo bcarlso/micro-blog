@@ -1,28 +1,35 @@
 package net.bcarlso.tdd;
 
-import java.util.ArrayList;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 public class MicroBlog {
 
 	private List<Post> posts;
+	private PostsFile postsRepository;
 
 	public MicroBlog() {
-		posts = new ArrayList<Post>();
+		postsRepository = new PostsFile("./posts.microblog");
+		posts = postsRepository.load();
 	}
 
 	public Post post(User user, String message) {
-		if(user == null) throw new IllegalArgumentException("User is required");
-		if(message == null) throw new IllegalArgumentException("Message is required");
-		
+		if (user == null)
+			throw new IllegalArgumentException("Null user passed in");
+		if (message == null)
+			throw new IllegalArgumentException("Null message passed in");
+
 		String validatedMessage = message;
-		
-		if( isTooLong(message) ) {
+
+		if (isTooLong(message))
 			validatedMessage = truncate(message);
-		}
 
 		Post post = new Post(user, validatedMessage);
 		posts.add(post);
+
+		postsRepository.save(posts);
+
 		return post;
 	}
 

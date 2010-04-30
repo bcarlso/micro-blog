@@ -2,6 +2,7 @@ package net.bcarlso.tdd;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class MicroBlogTest {
 
 	@Before
 	public void setUp() {
+		new File("./posts.microblog").delete();
 		blog = new MicroBlog();
 		user = new User("bcarlso");
 	}
@@ -51,6 +53,13 @@ public class MicroBlogTest {
 		assertEquals(10, blog.timeline().size());
 	}
 
+	@Test
+	public void shouldSavePostsAcrossSessions() throws Exception {
+		blog.post(user, "Saved Message");
+		List<Post> timeline = new MicroBlog().timeline();
+		assertEquals(blog.timeline().size(), timeline.size());
+	}
+	
 	private void addPosts(int numberOfPosts) {
 		for(int i = 0; i < numberOfPosts; i++) {
 			blog.post(user, String.valueOf(i));

@@ -1,6 +1,8 @@
 package net.bcarlso.tdd;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
 
 	private final User user;
 	private final String message;
