@@ -12,8 +12,12 @@ public class MicroBlog {
 	}
 
 	public Post post(User user, String message) {
-		System.out.println(message + " -> " + posts.size());
-		Post post = new Post(user, message);
+		Post post;
+		if (message.length() > 20) {
+			post = new Post(user, message.substring(0, 17) + "...");
+		} else {
+			post = new Post(user, message);
+		}
 		posts.add(post);
 		return post;
 	}

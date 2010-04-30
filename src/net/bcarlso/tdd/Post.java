@@ -10,12 +10,11 @@ public class Post {
 		this.message = message;
 	}
 
-	public User user() {
+	public User getUser() {
 		return user;
 	}
 
-	public String message() {
+	public String getMessage() {
 		return message;
 	}
-
 }
