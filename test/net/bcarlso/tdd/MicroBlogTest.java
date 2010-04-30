@@ -18,6 +18,17 @@ public class MicroBlogTest {
 		
 		assertEquals(user, post.user());
 		assertEquals("Message", post.message());
-		assertEquals(expectedTimeline, blog.postTimeline());
+		assertEquals(expectedTimeline, blog.timeline());
+	}
+	
+	@Test
+	public void shouldLimitTimeline() throws Exception {
+		MicroBlog blog = new MicroBlog();
+		User user = new User("bcarlso");
+		for(int i = 0; i < 11; i++) {
+			blog.post(user, String.valueOf(i));
+		}
+ 
+		assertEquals(10, blog.timeline().size());
 	}
 }

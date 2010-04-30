@@ -12,13 +12,14 @@ public class MicroBlog {
 	}
 
 	public Post post(User user, String message) {
+		System.out.println(message + " -> " + posts.size());
 		Post post = new Post(user, message);
 		posts.add(post);
 		return post;
 	}
 
-	public List<Post> postTimeline() {
-		return posts;
+	public List<Post> timeline() {
+		return (posts.size() > 10) ? posts.subList(0, 10) : posts;
 	}
 
 }
