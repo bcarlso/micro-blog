@@ -12,14 +12,23 @@ public class MicroBlog {
 	}
 
 	public Post post(User user, String message) {
-		Post post;
-		if (message.length() > 20) {
-			post = new Post(user, message.substring(0, 17) + "...");
-		} else {
-			post = new Post(user, message);
+		String validatedMessage = message;
+		
+		if( isTooLong(message) ) {
+			validatedMessage = truncate(message);
 		}
+
+		Post post = new Post(user, validatedMessage);
 		posts.add(post);
 		return post;
+	}
+
+	private String truncate(String message) {
+		return message.substring(0, 17) + "...";
+	}
+
+	private boolean isTooLong(String message) {
+		return message.length() > 20;
 	}
 
 	public List<Post> timeline() {
