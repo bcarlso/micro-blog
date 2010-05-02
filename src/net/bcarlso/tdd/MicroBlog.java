@@ -8,10 +8,12 @@ public class MicroBlog {
 
 	private List<Post> posts;
 	private PostsRepository repository;
+	private List<Post> newPosts;
 
 	public MicroBlog(PostsRepository repository) {
 		this.repository = repository;
 		posts = this.repository.load();
+		newPosts = new ArrayList<Post>();
 	}
 
 	public Post post(User user, String message) {
@@ -27,6 +29,7 @@ public class MicroBlog {
 
 		Post post = new Post(user, validatedMessage);
 		posts.add(post);
+		newPosts.add(0, post);
 
 		repository.save(posts);
 
