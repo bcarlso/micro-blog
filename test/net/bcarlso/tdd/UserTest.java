@@ -1,5 +1,6 @@
 package net.bcarlso.tdd;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,6 +29,14 @@ public class UserTest {
 		assertTrue(userToFollow.isFollowedBy(currentUser));
 	}
 	
+	@Test
+	public void shouldSilentlyIgnoreFollowingSomeoneMoreThanOnce() throws Exception {
+		User userToFollow = new User("toranb");
+		currentUser.follow(userToFollow);
+		currentUser.follow(userToFollow);
+		assertEquals(1, currentUser.followingCount());
+	}
+
 	@Test
 	public void shouldBeConsideredEqualWhenUsernamesMatch() throws Exception {
 		assertTrue(currentUser.equals(new User("bcarlso")));

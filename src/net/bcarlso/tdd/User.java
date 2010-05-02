@@ -26,8 +26,10 @@ public class User implements Serializable {
 	}
 
 	public void follow(User userToFollow) {
-		following.add(userToFollow);
-		userToFollow.addFollower(this);
+		if (!following.contains(userToFollow)) {
+			following.add(userToFollow);
+			userToFollow.addFollower(this);
+		}
 	}
 
 	public int followerCount() {
@@ -52,7 +54,7 @@ public class User implements Serializable {
 		else
 			return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return 1;
