@@ -31,7 +31,7 @@ public class MicroBlog {
 		posts.add(post);
 		newPosts.add(0, post);
 
-		repository.save(posts);
+		repository.save(newPosts);
 
 		return post;
 	}
