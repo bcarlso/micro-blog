@@ -22,6 +22,6 @@ public class Post implements Serializable {
 	}
 
 	public boolean mentions(User user) {
-		return message.contains("bcarlso");
+		return message.contains(user.getUsername());
 	}
 }
