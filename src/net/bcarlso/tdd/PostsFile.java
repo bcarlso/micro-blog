@@ -16,16 +16,17 @@ public class PostsFile implements PostsRepository {
 		this.filename = filename;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Post> load() {
 		List<Post> posts = new ArrayList<Post>();
 		try {
 			File f = new File(filename);
 			if (f.exists()) {
-				FileInputStream fos = new FileInputStream(f);
-				ObjectInputStream out = new ObjectInputStream(fos);
+				FileInputStream fis = new FileInputStream(f);
+				ObjectInputStream in = new ObjectInputStream(fis);
 
-				posts = (List<Post>) out.readObject();
-				out.close();
+				posts = (List<Post>) in.readObject();
+				in.close();
 			}
 			return posts;
 		} catch (Exception e) {
