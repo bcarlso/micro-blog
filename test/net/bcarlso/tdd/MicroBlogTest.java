@@ -46,6 +46,16 @@ public class MicroBlogTest {
 		assertEquals("Very looooooooooo...", post.getMessage());
 	}
 	
+	@Test
+	public void shouldShowTimelineInReverseChronologicalOrder() throws Exception {
+		blog.post(currentUser, "First message");
+		blog.post(currentUser, "Second message");
+		
+		List<Post> timeline = blog.timeline();
+		
+		assertEquals("Second message", timeline.get(0).getMessage());
+		assertEquals("First message", timeline.get(1).getMessage());
+	}
 	
 	@Test
 	public void shouldLimitTimeline() throws Exception {

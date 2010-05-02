@@ -1,6 +1,7 @@
 package net.bcarlso.tdd;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MicroBlog {
@@ -41,7 +42,9 @@ public class MicroBlog {
 	}
 
 	public List<Post> timeline() {
-		return (posts.size() > 10) ? posts.subList(0, 10) : posts;
+		ArrayList<Post> reverseChronologicalOrderedPosts = new ArrayList<Post>(posts);
+		Collections.reverse(reverseChronologicalOrderedPosts);
+		return (reverseChronologicalOrderedPosts.size() > 10) ? reverseChronologicalOrderedPosts.subList(0, 10) : reverseChronologicalOrderedPosts;
 	}
 
 	public List<Post> timeline(User currentUser) {
