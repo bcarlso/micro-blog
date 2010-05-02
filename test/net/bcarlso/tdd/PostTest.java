@@ -11,4 +11,17 @@ public class PostTest {
 		Post post = new Post(new User("somebody"), "Mentioning @bcarlso");
 		assertTrue(post.mentions(new User("bcarlso")));
 	}
+	
+	@Test
+	public void shouldOnlyRecogizeUsernamesAsMentionsWhenPrefixed() throws Exception {
+		Post post = new Post(new User("somebody"), "I loathe bcarlso");
+		assertFalse(post.mentions(new User("bcarlso")));
+	}
+
+	
+	@Test
+	public void shouldRequireExactUsernameToBeConsideredMentioned() throws Exception {
+		Post post = new Post(new User("somebody"), "@bcarlson");
+		assertFalse(post.mentions(new User("bcarlso")));
+	}
 }

@@ -1,6 +1,8 @@
 package net.bcarlso.tdd;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +24,8 @@ public class Post implements Serializable {
 	}
 
 	public boolean mentions(User user) {
-		return message.contains(user.getUsername());
+		Pattern compile = Pattern.compile("(@bcarlso)( |$)");
+		Matcher matcher = compile.matcher(message);
+		return matcher.find();
 	}
 }
