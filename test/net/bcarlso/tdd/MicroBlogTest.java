@@ -46,7 +46,7 @@ public class MicroBlogTest {
 	}
 	
 	@Test
-	public void shouldShowTimelineInReverseChronologicalOrder() throws Exception {
+	public void shouldShowTimelineNewestPostFirst() throws Exception {
 		blog.post(currentUser, "First message");
 		blog.post(currentUser, "Second message");
 		
