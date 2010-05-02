@@ -6,13 +6,11 @@ import java.util.List;
 
 public class MicroBlog {
 
-	private List<Post> posts;
 	private PostsRepository repository;
 	private List<Post> newPosts;
 
 	public MicroBlog(PostsRepository repository) {
 		this.repository = repository;
-		posts = this.repository.load();
 		newPosts = this.repository.load();
 	}
 
@@ -28,7 +26,6 @@ public class MicroBlog {
 			validatedMessage = truncate(message);
 
 		Post post = new Post(user, validatedMessage);
-		posts.add(post);
 		newPosts.add(0, post);
 
 		repository.save(newPosts);
