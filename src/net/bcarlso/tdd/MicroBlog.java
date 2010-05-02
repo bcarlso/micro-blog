@@ -48,12 +48,6 @@ public class MicroBlog {
 		return firstPageOf(newPosts);
 	}
 
-	private ArrayList<Post> orderPostsNewestFirst() {
-		ArrayList<Post> reverseChronologicalOrderedPosts = new ArrayList<Post>(posts);
-		Collections.reverse(reverseChronologicalOrderedPosts);
-		return reverseChronologicalOrderedPosts;
-	}
-
 	public List<Post> timeline(User currentUser) {
 		List<Post> personalizedTimeline = new ArrayList<Post>();
 		for(int i = 0; i < newPosts.size(); i++) {
