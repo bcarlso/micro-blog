@@ -42,8 +42,8 @@ public class MicroBlog {
 	}
 
 	public List<Post> timeline() {
-		ArrayList<Post> orderedPosts = orderPostsNewestFirst();
-		return (orderedPosts.size() > 10) ? orderedPosts.subList(0, 10) : orderedPosts;
+		ArrayList<Post> allPosts = orderPostsNewestFirst();
+		return firstPageOf(allPosts);
 	}
 
 	private ArrayList<Post> orderPostsNewestFirst() {
@@ -54,12 +54,17 @@ public class MicroBlog {
 
 	public List<Post> timeline(User currentUser) {
 		List<Post> personalizedTimeline = new ArrayList<Post>();
-		for(int i = 0; i < posts.size(); i++) {
-			Post currentPost = posts.get(i);
+		ArrayList<Post> allPosts = orderPostsNewestFirst();
+		for(int i = 0; i < allPosts.size(); i++) {
+			Post currentPost = allPosts.get(i);
 			if(currentPost.mentions(currentUser) || currentUser.isFollowing(currentPost.getUser())) {
 				personalizedTimeline.add(currentPost);
 			}
 		}
-		return personalizedTimeline;
+		return firstPageOf(personalizedTimeline);
+	}
+
+	private List<Post> firstPageOf(List<Post> personalizedTimeline) {
+		return (personalizedTimeline.size() > 10) ? personalizedTimeline.subList(0, 10) : personalizedTimeline;
 	}
 }

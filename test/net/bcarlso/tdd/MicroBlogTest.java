@@ -61,7 +61,7 @@ public class MicroBlogTest {
 
 	@Test
 	public void shouldLimitTimeline() throws Exception {
-		addPosts(11);
+		addPostsBy(currentUser, 11);
 		assertEquals(10, blog.timeline().size());
 	}
 
@@ -89,6 +89,27 @@ public class MicroBlogTest {
 		assertEquals(1, timeline.size());
 	}
 
+	@Test
+	public void shouldShowPersonalizedTimelineNewestPostFirst() throws Exception {
+		User kent = new User("kentbeck");
+		currentUser.follow(kent);
+		blog.post(kent, "First message");
+		blog.post(kent, "Second message");
+
+		List<Post> timeline = blog.timeline(currentUser);
+
+		assertEquals("Second message", timeline.get(0).getMessage());
+		assertEquals("First message", timeline.get(1).getMessage());
+	}
+
+	@Test
+	public void shouldLimitPersonalizedTimeline() throws Exception {
+		User kent = new User("kentbeck");
+		addPostsBy(kent, 11);
+		currentUser.follow(kent);
+		assertEquals(10, blog.timeline(currentUser).size());
+	}
+
 	private void assertOnlyPostsFrom(User user, List<Post> timeline) {
 		assertFalse(timeline.isEmpty());
 		for (Post post : timeline) {
@@ -96,9 +117,9 @@ public class MicroBlogTest {
 		}
 	}
 
-	private void addPosts(int numberOfPosts) {
+	private void addPostsBy(User user, int numberOfPosts) {
 		for (int i = 0; i < numberOfPosts; i++) {
-			blog.post(currentUser, String.valueOf(i));
+			blog.post(user, String.valueOf(i));
 		}
 	}
 
