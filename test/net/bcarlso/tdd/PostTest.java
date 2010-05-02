@@ -24,4 +24,8 @@ public class PostTest {
 		Post post = new Post(new User("somebody"), "@bcarlson");
 		assertFalse(post.mentions(new User("bcarlso")));
 	}
+
+	public void testMentions() {
+	
+	}
 }
