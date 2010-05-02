@@ -1,17 +1,16 @@
 package net.bcarlso.tdd;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MicroBlog {
 
 	private PostsRepository repository;
-	private List<Post> newPosts;
+	private List<Post> posts;
 
 	public MicroBlog(PostsRepository repository) {
 		this.repository = repository;
-		newPosts = this.repository.load();
+		posts = this.repository.load();
 	}
 
 	public Post post(User user, String message) {
@@ -26,9 +25,9 @@ public class MicroBlog {
 			validatedMessage = truncate(message);
 
 		Post post = new Post(user, validatedMessage);
-		newPosts.add(0, post);
+		posts.add(0, post);
 
-		repository.save(newPosts);
+		repository.save(posts);
 
 		return post;
 	}
@@ -42,13 +41,13 @@ public class MicroBlog {
 	}
 
 	public List<Post> timeline() {
-		return firstPageOf(newPosts);
+		return firstPageOf(posts);
 	}
 
 	public List<Post> timeline(User currentUser) {
 		List<Post> personalizedTimeline = new ArrayList<Post>();
-		for(int i = 0; i < newPosts.size(); i++) {
-			Post currentPost = newPosts.get(i);
+		for(int i = 0; i < posts.size(); i++) {
+			Post currentPost = posts.get(i);
 			if(currentPost.mentions(currentUser) || currentUser.isFollowing(currentPost.getUser())) {
 				personalizedTimeline.add(currentPost);
 			}
