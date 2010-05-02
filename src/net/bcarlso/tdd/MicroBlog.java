@@ -42,9 +42,14 @@ public class MicroBlog {
 	}
 
 	public List<Post> timeline() {
+		ArrayList<Post> orderedPosts = orderPostsNewestFirst();
+		return (orderedPosts.size() > 10) ? orderedPosts.subList(0, 10) : orderedPosts;
+	}
+
+	private ArrayList<Post> orderPostsNewestFirst() {
 		ArrayList<Post> reverseChronologicalOrderedPosts = new ArrayList<Post>(posts);
 		Collections.reverse(reverseChronologicalOrderedPosts);
-		return (reverseChronologicalOrderedPosts.size() > 10) ? reverseChronologicalOrderedPosts.subList(0, 10) : reverseChronologicalOrderedPosts;
+		return reverseChronologicalOrderedPosts;
 	}
 
 	public List<Post> timeline(User currentUser) {
