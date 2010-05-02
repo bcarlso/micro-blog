@@ -36,10 +36,6 @@ public class MicroBlog {
 		return message.substring(0, 17) + "...";
 	}
 
-	private boolean isTooLong(String message) {
-		return message.length() > 20;
-	}
-
 	public List<Post> timeline() {
 		return firstPageOf(posts);
 	}
@@ -57,5 +53,9 @@ public class MicroBlog {
 
 	private List<Post> firstPageOf(List<Post> timeline) {
 		return (timeline.size() > 10) ? timeline.subList(0, 10) : timeline;
+	}
+	
+	private boolean isTooLong(String message) {
+		return message.length() > 20;
 	}
 }
