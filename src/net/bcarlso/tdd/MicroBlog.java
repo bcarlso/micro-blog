@@ -13,7 +13,7 @@ public class MicroBlog {
 	public MicroBlog(PostsRepository repository) {
 		this.repository = repository;
 		posts = this.repository.load();
-		newPosts = new ArrayList<Post>();
+		newPosts = this.repository.load();
 	}
 
 	public Post post(User user, String message) {
@@ -56,9 +56,8 @@ public class MicroBlog {
 
 	public List<Post> timeline(User currentUser) {
 		List<Post> personalizedTimeline = new ArrayList<Post>();
-		ArrayList<Post> allPosts = orderPostsNewestFirst();
-		for(int i = 0; i < allPosts.size(); i++) {
-			Post currentPost = allPosts.get(i);
+		for(int i = 0; i < newPosts.size(); i++) {
+			Post currentPost = newPosts.get(i);
 			if(currentPost.mentions(currentUser) || currentUser.isFollowing(currentPost.getUser())) {
 				personalizedTimeline.add(currentPost);
 			}
