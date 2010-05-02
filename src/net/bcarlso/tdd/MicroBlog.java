@@ -45,8 +45,7 @@ public class MicroBlog {
 	}
 
 	public List<Post> timeline() {
-		ArrayList<Post> allPosts = orderPostsNewestFirst();
-		return firstPageOf(allPosts);
+		return firstPageOf(newPosts);
 	}
 
 	private ArrayList<Post> orderPostsNewestFirst() {
