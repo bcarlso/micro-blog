@@ -42,13 +42,13 @@ public class User implements Serializable {
 		followers.add(currentUser);
 	}
 
-	public String getName() {
+	public String getUsername() {
 		return username;
 	}
 
 	public boolean equals(Object other) {
 		if (other instanceof User)
-			return ((User) other).getName().equals(getName());
+			return ((User) other).getUsername().equals(getUsername());
 		else
 			return false;
 	}

@@ -56,7 +56,7 @@ public class MicroBlog {
 		List<Post> personalizedTimeline = new ArrayList<Post>();
 		for(int i = 0; i < posts.size(); i++) {
 			Post currentPost = posts.get(i);
-			if(currentPost.getMessage().contains("@bcarlso")) {
+			if(currentPost.getMessage().contains("@" + currentUser.getUsername())) {
 				personalizedTimeline.add(currentPost);
 			}
 			if(currentUser.isFollowing(currentPost.getUser())) {
