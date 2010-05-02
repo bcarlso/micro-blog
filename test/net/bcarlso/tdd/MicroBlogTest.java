@@ -1,6 +1,5 @@
 package net.bcarlso.tdd;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -13,11 +12,14 @@ import org.junit.Test;
 public class MicroBlogTest {
 	private MicroBlog blog;
 	private User currentUser;
+	private User kent;
 
 	@Before
 	public void setUp() {
 		blog = new MicroBlog(new DummyRepository());
 		currentUser = new User("bcarlso");
+		kent = new User("kentbeck");
+		currentUser.follow(kent);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -76,8 +78,6 @@ public class MicroBlogTest {
 	@Test
 	public void shouldFilterUserTimelineByFollowing() throws Exception {
 		blog = new MicroBlog(new StubbedRepositoryWithPostsFromKentAndAplusk());
-		User kent = new User("kentbeck");
-		currentUser.follow(kent);
 		assertOnlyPostsFrom(kent, blog.timeline(currentUser));
 	}
 
@@ -91,8 +91,6 @@ public class MicroBlogTest {
 
 	@Test
 	public void shouldShowPersonalizedTimelineNewestPostFirst() throws Exception {
-		User kent = new User("kentbeck");
-		currentUser.follow(kent);
 		blog.post(kent, "First message");
 		blog.post(kent, "Second message");
 
@@ -104,9 +102,7 @@ public class MicroBlogTest {
 
 	@Test
 	public void shouldLimitPersonalizedTimeline() throws Exception {
-		User kent = new User("kentbeck");
 		addPostsBy(kent, 11);
-		currentUser.follow(kent);
 		assertEquals(10, blog.timeline(currentUser).size());
 	}
 
@@ -131,11 +127,11 @@ public class MicroBlogTest {
 		}
 	}
 
-	public static class StubbedRepositoryWithPostsFromKentAndAplusk extends
+	public class StubbedRepositoryWithPostsFromKentAndAplusk extends
 			DummyRepository {
 		@Override
 		public List<Post> load() {
-			return Arrays.asList(new Post(new User("kentbeck"),
+			return Arrays.asList(new Post(kent,
 					"New JUnit released"), new Post(new User("aplusk"),
 					"You've been punked!"), new Post(new User("aplusk"),
 					"Blah Blah"));
