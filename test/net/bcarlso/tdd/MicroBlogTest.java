@@ -2,9 +2,7 @@ package net.bcarlso.tdd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -93,48 +91,12 @@ public class MicroBlogTest {
 		}
 	}
 	
-	private static class DummyRepository implements PostsRepository {
-
-		@Override
-		public List<Post> load() {
-			return new ArrayList<Post>();
-		}
-
-		@Override
-		public void save(List<Post> posts) {
-		}
-	}
-
-
-	public static class StubbedRepositoryWithPostsFromKentAndAplusk implements PostsRepository {
+	public static class StubbedRepositoryWithPostsFromKentAndAplusk extends DummyRepository {
 		@Override
 		public List<Post> load() {
 			return Arrays.asList(new Post(new User("kentbeck"), "New JUnit released"),
 					new Post(new User("aplusk"), "You've been punked!"),
 					new Post(new User("aplusk"), "Blah Blah"));
-		}
-
-		@Override
-		public void save(List<Post> posts) {
-		}
-	}
-
-	public static class MockRepository extends DummyRepository {
-
-		private List<Post> saveWasCalledWith;
-
-		public void verify() {
-			assertNotNull(saveWasCalledWith);
-		}
-		
-		@Override
-		public List<Post> load() {
-			return new ArrayList<Post>();
-		}
-
-		@Override
-		public void save(List<Post> posts) {
-			saveWasCalledWith = posts;
 		}
 	}
 }
