@@ -1,6 +1,7 @@
 package net.bcarlso.tdd;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
@@ -73,12 +74,14 @@ public class MicroBlogTest {
 	
 	@Test
 	public void shouldFilterUserTimelineByFollowing() throws Exception {
+		blog = new MicroBlog(new StubbedRepositoryWithPostsFromKentAndAplusk());
 		User kent = new User("kentbeck");
 		currentUser.follow(kent);
 		assertOnlyPostsFrom(kent, blog.timeline(currentUser));
 	}
 	
 	private void assertOnlyPostsFrom(User user, List<Post> timeline) {
+		assertFalse(timeline.isEmpty());
 		for(Post post : timeline) {
 			assertEquals(user, post.getUser());
 		}
