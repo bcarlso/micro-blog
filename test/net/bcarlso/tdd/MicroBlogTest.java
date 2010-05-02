@@ -1,5 +1,6 @@
 package net.bcarlso.tdd;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -19,21 +20,21 @@ public class MicroBlogTest {
 		currentUser = new User("bcarlso");
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void shouldRequireUser() throws Exception {
 		blog.post(null, "Anything");
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void shouldRequireMessage() throws Exception {
 		blog.post(currentUser, null);
 	}
-	
+
 	@Test
 	public void shouldBeAbleToPost() throws Exception {
 		Post post = blog.post(currentUser, "Message");
 		List<Post> expectedTimeline = Arrays.asList(post);
-		
+
 		assertEquals(currentUser, post.getUser());
 		assertEquals("Message", post.getMessage());
 		assertEquals(expectedTimeline, blog.timeline());
@@ -41,21 +42,23 @@ public class MicroBlogTest {
 
 	@Test
 	public void shouldTruncateLongMessages() throws Exception {
-		Post post = blog.post(currentUser, "Very loooooooooooooooooooooooonnnnnnnnnnnngggggggggg meeeeesssssaaaagggeeee");
+		Post post = blog
+				.post(currentUser,
+						"Very loooooooooooooooooooooooonnnnnnnnnnnngggggggggg meeeeesssssaaaagggeeee");
 		assertEquals("Very looooooooooo...", post.getMessage());
 	}
-	
+
 	@Test
 	public void shouldShowTimelineNewestPostFirst() throws Exception {
 		blog.post(currentUser, "First message");
 		blog.post(currentUser, "Second message");
-		
+
 		List<Post> timeline = blog.timeline();
-		
+
 		assertEquals("Second message", timeline.get(0).getMessage());
 		assertEquals("First message", timeline.get(1).getMessage());
 	}
-	
+
 	@Test
 	public void shouldLimitTimeline() throws Exception {
 		addPosts(11);
@@ -69,7 +72,7 @@ public class MicroBlogTest {
 		blog.post(currentUser, "Saved Message");
 		repository.verify();
 	}
-	
+
 	@Test
 	public void shouldFilterUserTimelineByFollowing() throws Exception {
 		blog = new MicroBlog(new StubbedRepositoryWithPostsFromKentAndAplusk());
@@ -77,26 +80,44 @@ public class MicroBlogTest {
 		currentUser.follow(kent);
 		assertOnlyPostsFrom(kent, blog.timeline(currentUser));
 	}
-	
+
+	@Test
+	public void shouldIncludeMentionsInTimelineRegardlessOfFollowingStatus()
+			throws Exception {
+		blog = new MicroBlog(new StubbedRepositoryWithMentions());
+		List<Post> timeline = blog.timeline(currentUser);
+		assertEquals(1, timeline.size());
+	}
+
 	private void assertOnlyPostsFrom(User user, List<Post> timeline) {
 		assertFalse(timeline.isEmpty());
-		for(Post post : timeline) {
+		for (Post post : timeline) {
 			assertEquals(user, post.getUser());
 		}
 	}
 
 	private void addPosts(int numberOfPosts) {
-		for(int i = 0; i < numberOfPosts; i++) {
+		for (int i = 0; i < numberOfPosts; i++) {
 			blog.post(currentUser, String.valueOf(i));
 		}
 	}
-	
-	public static class StubbedRepositoryWithPostsFromKentAndAplusk extends DummyRepository {
+
+	public class StubbedRepositoryWithMentions extends DummyRepository {
 		@Override
 		public List<Post> load() {
-			return Arrays.asList(new Post(new User("kentbeck"), "New JUnit released"),
-					new Post(new User("aplusk"), "You've been punked!"),
-					new Post(new User("aplusk"), "Blah Blah"));
+			return Arrays.asList(new Post(new User("someone_i_dont_follow"),
+					"@bcarlso Rulez"));
+		}
+	}
+
+	public static class StubbedRepositoryWithPostsFromKentAndAplusk extends
+			DummyRepository {
+		@Override
+		public List<Post> load() {
+			return Arrays.asList(new Post(new User("kentbeck"),
+					"New JUnit released"), new Post(new User("aplusk"),
+					"You've been punked!"), new Post(new User("aplusk"),
+					"Blah Blah"));
 		}
 	}
 }
