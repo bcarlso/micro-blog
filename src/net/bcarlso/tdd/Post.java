@@ -20,4 +20,8 @@ public class Post implements Serializable {
 	public String getMessage() {
 		return message;
 	}
+
+	public boolean mentions(User user) {
+		return message.contains("bcarlso");
+	}
 }
