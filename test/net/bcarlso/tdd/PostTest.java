@@ -6,26 +6,30 @@ import org.junit.Test;
 
 
 public class PostTest {
+	private static final User MICROBLOG_USER = new User("somebody");
+	private static final User BCARLSO = new User("bcarlso");
+
 	@Test
 	public void shouldRecognizeMentionsInPosts() throws Exception {
-		Post post = new Post(new User("somebody"), "Mentioning @bcarlso");
-		assertTrue(post.mentions(new User("bcarlso")));
+		assertTrue(postContaining("Mentioning @bcarlso").mentions(BCARLSO));
+	}
+
+	@Test
+	public void shouldRecognizeMentionsInTheMiddleOfPosts() throws Exception {
+		assertTrue(postContaining("Mention @bcarlso here").mentions(BCARLSO));
 	}
 	
 	@Test
 	public void shouldOnlyRecogizeUsernamesAsMentionsWhenPrefixed() throws Exception {
-		Post post = new Post(new User("somebody"), "I loathe bcarlso");
-		assertFalse(post.mentions(new User("bcarlso")));
+		assertFalse(postContaining("I loathe bcarlso").mentions(BCARLSO));
 	}
 
-	
 	@Test
 	public void shouldRequireExactUsernameToBeConsideredMentioned() throws Exception {
-		Post post = new Post(new User("somebody"), "@bcarlson");
-		assertFalse(post.mentions(new User("bcarlso")));
+		assertFalse(postContaining("@bcarlson").mentions(BCARLSO));
 	}
 
-	public void testMentions() {
-	
+	private Post postContaining(String message) {
+		return new Post(MICROBLOG_USER, message);
 	}
 }
