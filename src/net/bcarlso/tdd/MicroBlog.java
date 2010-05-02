@@ -55,7 +55,7 @@ public class MicroBlog {
 		return firstPageOf(personalizedTimeline);
 	}
 
-	private List<Post> firstPageOf(List<Post> personalizedTimeline) {
-		return (personalizedTimeline.size() > 10) ? personalizedTimeline.subList(0, 10) : personalizedTimeline;
+	private List<Post> firstPageOf(List<Post> timeline) {
+		return (timeline.size() > 10) ? timeline.subList(0, 10) : timeline;
 	}
 }
